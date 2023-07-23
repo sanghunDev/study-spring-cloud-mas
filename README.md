@@ -1,4 +1,4 @@
-# sutdy-spring-cloud-mas
+# study-spring-cloud-mas
 * 멀티묘듈로 구성된 Spring Cloud 를 이용한 MAS 프로젝트
   * MAS 템플릿을 만들기 전 스터디용 프로젝트
 
