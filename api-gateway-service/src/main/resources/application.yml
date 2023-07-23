@@ -12,7 +12,15 @@ spring:
     name: api-gateway-service
   cloud:
     gateway:
+      default-filters:
+        - name:
+          args:
+            baseMessage: GateWayBaseMsg
+            preLogger: true
+            postLogger: true
       routes:
         - id: http://localhost:8081/
           predicates:
             - Path=/first-service/**
+          filters:
+            - CustomFilter
