@@ -1,11 +1,15 @@
 # study-spring-cloud-mas
-* 멀티묘듈로 구성된 Spring Cloud 를 이용한 MAS 프로젝트
+* 멀티모듈로 구성된 Spring Cloud 를 이용한 MAS 프로젝트
   * MAS 템플릿을 만들기 전 스터디용 프로젝트
 
-# 공통 개발 환경
+-------------------------------
+
+# ApiGateway 및 Discovery 공통 개발 환경
 * Build Tool : Gradle
 * Java Version : 17
 * Spring Boot Version : 3.1.2
+
+-------------------------------
 
 # ApiGatewayService 프로젝트
 * SpringCloudGateway
@@ -20,7 +24,7 @@
 ### 의존성
 * Netflix-eureka-client
 * SpringCloudGateway
-* lombok
+* Lombok
 
 ----------------------------
 
@@ -36,9 +40,22 @@
 * Netflix-eureka-server
 
 ----------------------------
+
 # UserService 프로젝트
+* 회원 관련 마이크로 서비스
+
+### 개발환경 
+* Build Tool : Gradle
+* Java Version : 17
+* Spring Boot Version : 3.0.5
+* Spring Cloud Version : 2022.0.3
+
 ### 의존성
-* Netflix-eureka-client
+* Netflix-eureka-client: 4.0.0
 * SpringWeb
 * Lombok
+* h2
 * SpringBootDevtools
+* SpringDataJpa
+* QueryDsl: 5.0.0
+* ModelMapper
