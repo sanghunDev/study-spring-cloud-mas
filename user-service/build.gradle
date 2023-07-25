@@ -30,6 +30,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:4.0.0'
     implementation 'org.modelmapper:modelmapper:3.1.1'
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
 
     runtimeOnly 'com.h2database:h2'
     compileOnly 'org.projectlombok:lombok'
