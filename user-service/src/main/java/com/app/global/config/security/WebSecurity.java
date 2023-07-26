@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.IpAddressMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -29,7 +28,7 @@ public class WebSecurity {
                 authorize
                         .requestMatchers(WHITE_LIST).permitAll()
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
-                        .requestMatchers(new IpAddressMatcher("127.0.0.1")).permitAll()
+//                        .requestMatchers(new IpAddressMatcher("127.0.0.1")).permitAll()
                         .anyRequest().authenticated()
 
         ).build();
