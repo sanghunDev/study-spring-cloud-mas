@@ -1,9 +1,8 @@
-package com.app.api.user.service;
+package com.app.domain.user.service;
 
 import com.app.api.user.dto.CreateUserRequest;
 import com.app.domain.user.entity.User;
 import com.app.domain.user.repository.UserRepository;
-import com.app.domain.user.service.UserService;
 import com.app.global.config.dummy.DummyObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
