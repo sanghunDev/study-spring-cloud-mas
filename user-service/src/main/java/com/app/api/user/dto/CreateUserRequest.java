@@ -2,6 +2,8 @@ package com.app.api.user.dto;
 
 import com.app.domain.user.entity.User;
 import lombok.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import java.util.UUID;
 
 @Getter
@@ -24,11 +26,13 @@ public class CreateUserRequest {
     }
 
     public User toEntity() {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
         return User.builder()
                 .email(email)
                 .name(name)
                 .userId(UUID.randomUUID().toString())
-                .encryptedPassword("encryptedPassword")   //TODO 암호화 비번추가 필요
+                .encryptedPassword(encoder.encode(password))
                 .build();
     }
 }
