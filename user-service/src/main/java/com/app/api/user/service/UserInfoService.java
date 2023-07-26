@@ -16,6 +16,6 @@ public class UserInfoService {
 
     public CreateUserResponse join(CreateUserRequest userRequest) {
         User userPs = userService.registerUser(userRequest.toEntity());
-        return new CreateUserResponse(userPs.getUserId(), userPs.getEmail(), userPs.getName(), userPs.getCreateTime());
+        return CreateUserResponse.of(userPs);
     }
 }
