@@ -30,3 +30,8 @@ eureka:
 
 greeting:
   message: Welcome to the UserService
+
+token:
+  secret: user_secret # todo 임의의 문자열
+  access-token-expiration-time: 900000 # todo 15분 1000(ms) x 60(s) x 15(m)
+  refresh-token-expiration-time: 1209600000 # todo 2주 1000(ms) x 60 (s) x 60(m) x 24(h) x 14(d)
