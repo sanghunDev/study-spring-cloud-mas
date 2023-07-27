@@ -26,18 +26,18 @@ public class TokenManager {
     /**
      * JwtTokenDto 생성
      *
-     * @param email
+     * @param userId
      * @param role
      * @return
      */
-    public JwtTokenDto createJwtTokenDto(String email, Role role) {
+    public JwtTokenDto createJwtTokenDto(String userId, Role role) {
         // 만료시간 생성
         Date accessTokenExpireTime = createAccessTokenExpireTime();
         Date refreshTokenExpireTime = createRefreshTokenExpireTime();
 
         // 토큰 생성
-        String accessToken = createAccessToken(email, role, accessTokenExpireTime);
-        String refreshToken = createRefreshToken(email, refreshTokenExpireTime);
+        String accessToken = createAccessToken(userId, role, accessTokenExpireTime);
+        String refreshToken = createRefreshToken(userId, refreshTokenExpireTime);
         return JwtTokenDto.builder()
                 .grantType(GrantType.BEARER.getType())
                 .accessToken(accessToken)
@@ -68,12 +68,12 @@ public class TokenManager {
     /**
      * accessToken 생성
      */
-    public String createAccessToken(String email, Role role, Date expirationTime) {
+    public String createAccessToken(String userId, Role role, Date expirationTime) {
         return Jwts.builder()
                 .setSubject(ToKenType.ACCESS.name())    // 토큰 제목
                 .setIssuedAt(new Date())                // 토큰 발급 시간
                 .setExpiration(expirationTime)          // 토큰 만료 시간
-                .claim("email", email)      // 회원 아이디
+                .claim("userId", userId)      // 회원 아이디
                 .claim("role", role)               // 유저 role
                 .signWith(SignatureAlgorithm.HS512, tokenSecret.getBytes(StandardCharsets.UTF_8))   // 토큰을 생성할때 사용할 알고리즘 지정 (HS512)
                 .setHeaderParam("typ", "JWT")  // 토큰 타입 JWT
@@ -83,12 +83,12 @@ public class TokenManager {
     /**
      * refreshToken 생성
      */
-    public String createRefreshToken(String email, Date expirationTime) {
+    public String createRefreshToken(String userId, Date expirationTime) {
         return Jwts.builder()
                 .setSubject(ToKenType.REFRESH.name())    // 토큰 제목
                 .setIssuedAt(new Date())                // 토큰 발급 시간
                 .setExpiration(expirationTime)          // 토큰 만료 시간
-                .claim("email", email)      // 회원 아이디
+                .claim("userId", userId)      // 회원 아이디
                 .signWith(SignatureAlgorithm.HS512, tokenSecret.getBytes(StandardCharsets.UTF_8))   // 토큰을 생성할때 사용할 알고리즘 지정 (HS512)
                 .setHeaderParam("typ", "JWT")  // 토큰 타입 JWT
                 .compact();

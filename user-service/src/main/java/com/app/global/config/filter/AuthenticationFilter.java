@@ -50,9 +50,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                                             Authentication authResult) throws IOException, ServletException {
         String userEmail = ((User) authResult.getPrincipal()).getUsername();
         UserResponse userInfo = userInfoService.findByEmail(userEmail);
-        JwtTokenDto jwtTokenDto = tokenManager.createJwtTokenDto(userInfo.getEmail(), Role.USER);
+        JwtTokenDto jwtTokenDto = tokenManager.createJwtTokenDto(userInfo.getUserId(), Role.USER);
 
-        response.addHeader("userId", userEmail);
+        response.addHeader("userId", userInfo.getUserId());
         response.addHeader("token", jwtTokenDto.getAccessToken());
 
         //super.successfulAuthentication(request, response, chain, authResult);
