@@ -1,5 +1,6 @@
 package com.app.global.config.security;
 
+import com.app.api.user.service.UserInfoService;
 import com.app.domain.user.service.UserService;
 import com.app.global.config.filter.AuthenticationFilter;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +21,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class WebSecurity {
     private final UserService userService;
+    private final UserInfoService userInfoService;
     private final ObjectPostProcessor<Object> objectPostProcessor;
     private Environment env;
-
     private static final String[] WHITE_LIST = {
             "/users/**",
             "/login",
@@ -57,7 +58,7 @@ public class WebSecurity {
     }
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(userInfoService, env);
         AuthenticationManagerBuilder builder = new AuthenticationManagerBuilder(objectPostProcessor);
         authenticationFilter.setAuthenticationManager(authenticationManager(builder));
         return authenticationFilter;
