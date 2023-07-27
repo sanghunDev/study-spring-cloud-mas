@@ -41,9 +41,13 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new AuthenticationException(MEMBER_NOT_EXISTS));
+    }
+
     @Override
-    public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new AuthenticationException(MEMBER_NOT_EXISTS));
+    public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException, AuthenticationException {
+        User user = findByEmail(userEmail);
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getEncryptedPassword(), true, true, true, true, new ArrayList<>());
     }
 }

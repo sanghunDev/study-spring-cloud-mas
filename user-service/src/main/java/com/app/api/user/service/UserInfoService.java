@@ -27,4 +27,10 @@ public class UserInfoService {
         List<User> usersPs = userService.findAll();
         return usersPs.stream().map(user -> UserResponse.of(user)).collect(Collectors.toList());
     }
+
+    public UserResponse findByEmail(String email) {
+        User userPs = userService.findByEmail(email);
+        return UserResponse.of(userPs);
+    }
+
 }
