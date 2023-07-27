@@ -3,11 +3,11 @@ package com.app.global.config.security;
 import com.app.api.user.service.UserInfoService;
 import com.app.domain.user.service.UserService;
 import com.app.global.config.filter.AuthenticationFilter;
+import com.app.global.config.jwt.service.TokenManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,10 +20,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurity {
+    private final TokenManager tokenManager;
     private final UserService userService;
     private final UserInfoService userInfoService;
     private final ObjectPostProcessor<Object> objectPostProcessor;
-    private Environment env;
+
     private static final String[] WHITE_LIST = {
             "/users/**",
             "/login",
@@ -58,7 +59,7 @@ public class WebSecurity {
     }
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter(userInfoService, env);
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(userInfoService, tokenManager);
         AuthenticationManagerBuilder builder = new AuthenticationManagerBuilder(objectPostProcessor);
         authenticationFilter.setAuthenticationManager(authenticationManager(builder));
         return authenticationFilter;
