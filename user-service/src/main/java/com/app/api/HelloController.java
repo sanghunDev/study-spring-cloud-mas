@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/user-service")
 @RequiredArgsConstructor
 public class HelloController {
     final private Greeting greeting;
