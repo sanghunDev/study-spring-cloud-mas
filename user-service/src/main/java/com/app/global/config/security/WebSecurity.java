@@ -1,17 +1,28 @@
 package com.app.global.config.security;
 
+import com.app.domain.user.service.UserService;
+import com.app.global.config.filter.AuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurity {
+    private final UserService userService;
+    private final ObjectPostProcessor<Object> objectPostProcessor;
+    private Environment env;
+
     private static final String[] WHITE_LIST = {
             "/users/**",
             "/login",
@@ -25,12 +36,31 @@ public class WebSecurity {
                 .headers().frameOptions().disable();
 
         return security.authorizeHttpRequests(authorize ->
-                authorize
-                        .requestMatchers(WHITE_LIST).permitAll()
-                        .requestMatchers(PathRequest.toH2Console()).permitAll()
-//                        .requestMatchers(new IpAddressMatcher("127.0.0.1")).permitAll()
-                        .anyRequest().authenticated()
+                {
+                    try {
+                        authorize
+                                .requestMatchers(WHITE_LIST).permitAll()
+                                .requestMatchers(PathRequest.toH2Console()).permitAll()
+                                .and()
+                                .addFilter(getAuthenticationFilter());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
 
         ).build();
     }
+
+    public AuthenticationManager authenticationManager(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
+        return auth.build();
+    }
+
+    private AuthenticationFilter getAuthenticationFilter() throws Exception {
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
+        AuthenticationManagerBuilder builder = new AuthenticationManagerBuilder(objectPostProcessor);
+        authenticationFilter.setAuthenticationManager(authenticationManager(builder));
+        return authenticationFilter;
+    }
+
 }
