@@ -26,8 +26,9 @@ public class WebSecurity {
     private final ObjectPostProcessor<Object> objectPostProcessor;
 
     private static final String[] WHITE_LIST = {
-            "/users/**",
-            "/login",
+//            "/users/**",
+//            "/login",
+            "/**"
     };
 
     @Bean
