@@ -53,7 +53,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         JwtTokenDto jwtTokenDto = tokenManager.createJwtTokenDto(userInfo.getUserId(), Role.USER);
 
         response.addHeader("userId", userInfo.getUserId());
-        response.addHeader("token", jwtTokenDto.getAccessToken());
+        response.addHeader("accessToken", jwtTokenDto.getAccessToken());
+        response.addHeader("refreshToken", jwtTokenDto.getRefreshToken());
 
         //super.successfulAuthentication(request, response, chain, authResult);
     }
