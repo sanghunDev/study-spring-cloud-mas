@@ -10,6 +10,11 @@ eureka:
 spring:
   application:
     name: api-gateway-service
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
   cloud:
     gateway:
       default-filters:
