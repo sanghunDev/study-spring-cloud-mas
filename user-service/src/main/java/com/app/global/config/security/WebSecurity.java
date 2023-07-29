@@ -1,5 +1,6 @@
 package com.app.global.config.security;
 
+import com.app.api.com.service.RedisService;
 import com.app.api.user.service.UserInfoService;
 import com.app.domain.user.service.UserService;
 import com.app.global.config.filter.AuthenticationFilter;
@@ -24,6 +25,7 @@ public class WebSecurity {
     private final UserService userService;
     private final UserInfoService userInfoService;
     private final ObjectPostProcessor<Object> objectPostProcessor;
+    private final RedisService redisService;
 
     private static final String[] WHITE_LIST = {
 //            "/users/**",
@@ -60,7 +62,7 @@ public class WebSecurity {
     }
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter(userInfoService, tokenManager);
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(userInfoService, tokenManager, redisService);
         AuthenticationManagerBuilder builder = new AuthenticationManagerBuilder(objectPostProcessor);
         authenticationFilter.setAuthenticationManager(authenticationManager(builder));
         return authenticationFilter;

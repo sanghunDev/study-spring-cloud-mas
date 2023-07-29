@@ -1,5 +1,6 @@
 package com.app.global.config.filter;
 
+import com.app.api.com.service.RedisService;
 import com.app.api.user.dto.RequestLogin;
 import com.app.api.user.dto.UserResponse;
 import com.app.api.user.service.UserInfoService;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final UserInfoService userInfoService;
     private final TokenManager tokenManager;
+    private final RedisService redisService;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
@@ -50,9 +52,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                                             Authentication authResult) throws IOException, ServletException {
         String userEmail = ((User) authResult.getPrincipal()).getUsername();
         UserResponse userInfo = userInfoService.findByEmail(userEmail);
-        JwtTokenDto jwtTokenDto = tokenManager.createJwtTokenDto(userInfo.getUserId(), Role.USER);
+        String userId = userInfo.getUserId();
+        JwtTokenDto jwtTokenDto = tokenManager.createJwtTokenDto(userId, Role.USER);
 
-        response.addHeader("userId", userInfo.getUserId());
+        redisService.setValues(userId, jwtTokenDto);
+        response.addHeader("userId", userId);
         response.addHeader("accessToken", jwtTokenDto.getAccessToken());
         response.addHeader("refreshToken", jwtTokenDto.getRefreshToken());
 
